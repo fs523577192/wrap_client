@@ -1,19 +1,17 @@
 <template>
-<article id="app">
-    <el-menu default-active="validation" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+<article id="app"
+         v-loading.fullscreen.lock="$store.state.loading"
+         element-loading-text="加载中">
+    <el-menu default-active="validation" router="true" mode="horizontal">
         <el-menu-item index="validation">装箱验证</el-menu-item>
         <el-menu-item index="box">出货单管理</el-menu-item>
         <el-menu-item index="component">零部件管理</el-menu-item>
     </el-menu>
     <router-view></router-view>
-    <div class="ui active inverted page dimmer" v-if="$store.state.loading">
-        <div class="ui text loader">加载中...</div>
-    </div>
 </article>
 </template>
 
 <script>
-import $ from 'jquery';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Router from 'vue-router';
@@ -51,18 +49,13 @@ export default {
     store: states,
     mounted () {
         thiz = this;
-        this.$router.beforeEach(function (to, from, next) {
+        thiz.$router.beforeEach(function (to, from, next) {
             thiz.$store.commit('setLoading', true);
             next();
         });
-        this.$router.afterEach(function () {
+        thiz.$router.afterEach(function () {
             thiz.$store.commit('setLoading', false);
         });
-    },
-    methods: {
-        handleSelect (key, keyPath) {
-            console.log(key);
-        }
     }
 };
 </script>

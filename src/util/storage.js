@@ -1,14 +1,13 @@
 (function () {
     Storage.prototype.getObject = function (name) {
-        var temp = this.getItem(name);
-        if (!String.isString(temp)) return temp;
-        return JSON.parse(temp);
-    }
+        const temp = this.getItem(name);
+        return !String.isString(temp) ? temp : JSON.parse(temp);
+    };
     Storage.prototype.setObject = function (name, obj) {
-        if (undefined === obj) {
+        if (typeof(obj) === 'undefined') {
             this.removeItem(name);
         } else {
             this.setItem(name, JSON.stringify(obj));
         }
-    }
+    };
 })();
