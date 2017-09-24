@@ -1,64 +1,55 @@
-import $ from 'jquery';
-import Es6Promise from 'es6-promise';
 import './common/common.js';
 
-var myAjax = function (options) {
+var myAjax = function (instance, options) {
+    if (!instance || !instance.$http ||
+           !Function.isFunction(instance.$http.get) ||
+           !Function.isFunction(instance.$http.post) ||
+           !Function.isFunction(instance.$http.patch) ||
+           !Function.isFunction(instance.$http.put) ||
+           !Function.isFunction(instance.$http.delete)) {
+        throw new TypeError('"instance" is not a Vue instance');
+    }
+
     options = options || {};
-    return new Es6Promise(function (resolve, reject) {
-        $.ajax({
-            url: options.url || '',
-            method: options.method || 'GET',
-            data: options.data || {},
-            dataType: 'json',
-            cache: options.cache,
-            contentType: options.contentType,
-            processData: options.processData,
-            error: function (jqXHR, status, error) {
-                if ('parseerror' === error) {
-                    reject({
-                        reason: myAjax.ERROR_PARSE,
-                        message: options.messageParseError ||
-                                'The response is not in JSON format',
-                        status: status,
-                        error: error
-                    });
-                } else {
-                    reject({
-                        reason: myAjax.ERROR_NETWORK,
-                        message: options.messageNetworkError ||
-                                'There is something wrong with your network',
-                        status: status,
-                        error: error
-                    });
-                }
-            },
-            success: function (data, status, jqXHR) {
-                if (0 === data.code) {
-                    resolve({
-                        data: data.data,
-                        message: data.message,
-                        timestamp: data.timestamp
-                    });
-                } else if (10 === data.code) {
-                    reject({
-                        reason: myAjax.ERROR_LOGIN,
-                        message: data.message,
-                        timestamp: data.timestamp
-                    });
-                } else if (String.isString(data.message)) {
-                    reject({
-                        reason: myAjax.ERROR_SERVER_DEFINED,
-                        message: data.message,
-                        code: data.code,
-                        timestamp: data.timestamp
-                    });
-                }
+    if (typeof(options.method) !== 'undefined' &&
+            options.method !== null &&
+            !String.isString(options.method)) {
+        throw new TypeError('Invalid method');
+    }
+    options.method = options.method && options.method.toUpperCase() || 'GET';
+    if (typeof(options.url) !== 'undefined' &&
+            options.url !== null &&
+            !String.isString(options.url)) {
+        throw new TypeError('Invalid url');
+    }
+    options.url = options.url || '';
+
+    const resolve = function (response) {
+        return response.json().then(function (json) {
+            if (0 !== json.code) {
+                throw response;
             }
+            return json;
         });
-    });
+    };
+    if ('GET' === options.method) {
+        return instance.$http.get(options.url, options).then(resolve);
+    }
+    if ('DELETE' === options.method) {
+        return instance.$http.delete(options.url, options).then(resolve);
+    }
+    if ('POST' === options.method) {
+        return instance.$http.post(
+                options.url, options.body, options).then(resolve);
+    }
+    if ('PATCH' === options.method) {
+        return instance.$http.patch(
+                options.url, options.body, options).then(resolve);
+    }
+    if ('PUT' === options.method) {
+        return instance.$http.put(
+                options.url, options.body, options).then(resolve);
+    }
+    throw new Error('Unsupported method');
 };
-myAjax.ERROR_NETWORK = 'network';
-myAjax.ERROR_PARSE = 'parse';
-myAjax.ERROR_LOGIN = 'login';
-myAjax.ERROR_SERVER_DEFINED = 'server_defined';
 export default myAjax;

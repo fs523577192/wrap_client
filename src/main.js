@@ -5,8 +5,9 @@ import Router from 'vue-router';
 
 import App from './App';
 
-import ComponentList from './component/list';
-import ComponentEdit from './component/edit';
+import BoxList from './box/List';
+import ComponentList from './component/List';
+import ComponentEdit from './component/Edit';
 
 Vue.use(Router);
 
@@ -18,8 +19,8 @@ new Vue({
     template: '<App/>',
     router: new Router({
         routes: [
-            /* { path: 'box', component: },
-            { path: 'box/edit', component: },*/
+            { path: '/box', component: BoxList },
+//            { path: 'box/edit', component: },*/
             { path: '/component', component: ComponentList },
             { path: '/component/edit', component: ComponentEdit }
         ]

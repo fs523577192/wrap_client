@@ -8,12 +8,17 @@
         </el-row>
         <el-row>
             <el-col :span="20">
-                <el-form label-width="80px">
+                <el-form label-width="80px" @submit.native.stop.prevent="submit">
                     <el-form-item label="名称">
                         <el-input v-model="name" :maxlength="100"></el-input>
                     </el-form-item>
+                    <el-form-item v-if="nameError.length > 0">
+                        <el-alert :title="nameError" type="warning" :closable="false">
+                        </el-alert>
+                    </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="submit">确认</el-button>
+                        <el-button type="primary" @click="submit"
+                                :disabled="name.length <= 0">确认</el-button>
                         <el-button @click="cancel">取消</el-button>
                     </el-form-item>
                 </el-form>
@@ -59,7 +64,10 @@
                 promise.then(function (response) {
                     return response.json();
                 }).then(function (result) {
-                    if (0 === result.code) {}
+                    if (0 === result.code) {
+                    } else {
+                        thiz.nameError = result.message;
+                    }
                 }).catch(function (response) {});
             },
             cancel () {

@@ -2,11 +2,11 @@
 <div>
     <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="15">
-            <h2 class="grid-content">零部件列表</h2>
+            <h2 class="grid-content">出货单列表</h2>
         </el-col>
         <el-col :span="5" style="text-align: right">
             <div class="grid-content">
-                <el-button @click="add">添加零部件</el-button>
+                <el-button @click="add">添加出货单</el-button>
             </div>
         </el-col>
     </el-row>
@@ -62,7 +62,7 @@ function getList () {
     thiz.$store.commit('setLoading', true);
     myAjax(thiz, {
         method: 'GET',
-        url: '/component',
+        url: '/box',
         params: {
             page: thiz.page,
             size: thiz.size
@@ -77,7 +77,7 @@ function getList () {
     });
 }
 export default {
-    name: 'component-list',
+    name: 'box-list',
     mounted () {
         thiz = this;
         getList();
@@ -101,11 +101,11 @@ export default {
             getList();
         },
         add () {
-            thiz.$router.push('/component/edit');
+            thiz.$router.push('/box/edit');
         },
-        edit (component) {
+        edit (box) {
         },
-        remove (component) {
+        remove (box) {
         }
     }
 };
