@@ -18,7 +18,7 @@
                     style="width: 100%">
                 <el-table-column
                         width="120" prop="academicYear"
-                        label="学年">
+                        sortable="custom" label="学年">
                 </el-table-column>
                 <el-table-column
                         width="90" prop="semesterInfo"
@@ -26,11 +26,11 @@
                 </el-table-column>
                 <el-table-column
                         prop="name"
-                        label="名称">
+                        sortable="custom" label="名称">
                 </el-table-column>
                 <el-table-column
                         width="120" prop="begin_time_info"
-                        label="开始时间">
+                        sortable="custom" label="开始时间">
                 </el-table-column>
                 <el-table-column
                         width="120" prop="end_time_info"
@@ -104,10 +104,21 @@ export default {
             page: 1,
             size: 10,
             list: [],
+            orderBy: 'beginTime',
+            orderDirection: 'DESC',
             loading: true
         };
     },
     methods: {
+        sortChange (options) {
+            this.orderBy = /^(year|name)$/i.test(options.prop) ?
+                    options.prop : 'beginTime';
+            if (/^asc/i.test(options.order)) {
+                this.orderDirection = 'ASC';
+            } else {
+                this.orderDirection = 'DESC';
+            }
+        },
         setPage (page) {
             thiz.page = page;
             getList();

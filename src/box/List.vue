@@ -28,8 +28,10 @@
                 <el-table-column
                         prop="address"
                         label="操作"
-                        width="180">
+                        width="240">
                     <template scope="scope">
+                        <el-button @click="barcode(scope.row)"
+                                   type="info" size="small">条形码</el-button>
                         <el-button @click="edit(scope.row)"
                                    size="small">编辑</el-button>
                         <el-button @click="remove(scope.row)"
@@ -104,8 +106,12 @@ export default {
             thiz.$router.push('/box/edit');
         },
         edit (box) {
+            thiz.$router.push('/box/edit?id=' + box.id);
         },
         remove (box) {
+        },
+        barcode (box) {
+            window.open('/box/barcode?id=' + box.id);
         }
     }
 };

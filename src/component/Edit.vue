@@ -28,54 +28,73 @@
 </template>
 
 <script>
-    import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
+import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
+import myAjax from '../util/ajax';
 
-    let thiz;
-    export default {
-        components: {ElFormItem},
-        name: 'component-edit',
-        props: {
-            id: {
-                validator (val) {
-                    return '' === val || (Number.isInteger(val) && val > 0);
-                }
-            }
-        },
-        data () {
-            return {
-                name: '',
-                nameError: '',
-            };
-        },
-        methods: {
-            submit () {
-                if (thiz.name.trim() === '') {
-                    thiz.nameError = '';
-                    return;
-                }
-                let component = { name: thiz.name };
-                let promise;
-                if (thiz.id > 0) {
-                    component.id = thiz.id;
-                    promise = thiz.$http.patch('/component', component);
-                } else {
-                    promise = thiz.$http.post('/component', component);
-                }
-                promise.then(function (response) {
-                    return response.json();
-                }).then(function (result) {
-                    if (0 === result.code) {
-                    } else {
-                        thiz.nameError = result.message;
-                    }
-                }).catch(function (response) {});
-            },
-            cancel () {
-                this.$router.back();
-            }
-        },
-        mounted () {
-            thiz = this;
+const getComponent = function (thiz) {
+    thiz.$store.commit('setLoading', true);
+    myAjax(thiz, {
+        method: 'GET',
+        url: '/component/id',
+        params: {
+            id: thiz.id,
         }
-    };
+    }).then(function (json) {
+        thiz.$store.commit('setLoading', false);
+        thiz.name = json.data.name;
+    }).catch(function (response) {
+        console.log(response);
+    });
+};
+export default {
+    components: {ElFormItem},
+    name: 'component-edit',
+    props: {
+        id: {
+            validator (val) {
+                return '' === val || (Number.isInteger(val) && val > 0);
+            }
+        }
+    },
+    data () {
+        return {
+            name: '',
+            nameError: '',
+        };
+    },
+    methods: {
+        submit () {
+            const thiz = this;
+            if (thiz.name.trim() === '') {
+                thiz.nameError = '';
+                return;
+            }
+            let component = { name: thiz.name };
+            let promise;
+            if (thiz.id > 0) {
+                component.id = thiz.id;
+                promise = thiz.$http.patch('/component', component);
+            } else {
+                promise = thiz.$http.post('/component', component);
+            }
+            promise.then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                if (0 === result.code) {
+                    thiz.$router.back();
+                } else {
+                    thiz.nameError = result.message;
+                }
+            }).catch(function (response) {});
+        },
+        cancel () {
+            this.$router.back();
+        }
+    },
+    mounted () {
+        if (this.id) {
+            getComponent(this);
+        }
+    }
+};
 </script>
