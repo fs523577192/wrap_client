@@ -69,7 +69,7 @@ export default {
                 thiz.nameError = '';
                 return;
             }
-            let component = { name: thiz.name };
+            const component = { name: thiz.name };
             let promise;
             if (thiz.id > 0) {
                 component.id = thiz.id;

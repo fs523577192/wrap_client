@@ -9,6 +9,7 @@ import BoxList from './box/List';
 import BoxEdit from './box/Edit';
 import ComponentList from './component/List';
 import ComponentEdit from './component/Edit';
+import Validation from './validation/Validation';
 
 import ActivityList from './jiadian/List';
 import ActivityEdit from './jiadian/Edit';
@@ -46,6 +47,7 @@ new Vue({
                 component: ComponentEdit,
                 props: idRouteProp
             },
+            { path: '/validation', component: Validation },
             { path: '/jiadian/activity', component: ActivityList },
             {
                 path: '/jiadian/activity/edit',
