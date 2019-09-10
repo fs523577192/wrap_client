@@ -29,7 +29,7 @@
                         prop="address"
                         label="操作"
                         width="240">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button @click="barcode(scope.row)"
                                    type="info" size="small">条形码</el-button>
                         <el-button @click="edit(scope.row)"

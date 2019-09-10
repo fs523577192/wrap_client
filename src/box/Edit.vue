@@ -25,7 +25,7 @@
                                 prop="number"
                                 label="数量"
                                 width="120">
-                            <template scope="scope">
+                            <template slot-scope="scope">
                                 <el-input-number :value="scope.row.number"
                                         controls-position="right"
                                         @change="changeNumber($event, scope.row.index)"
@@ -60,7 +60,7 @@
                         prop="address"
                         label="操作"
                         width="80">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button v-if="modified && !components[scope.row.id.toString()]"
                                 @click="add(scope.row)"
                                 size="small">添加</el-button>

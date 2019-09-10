@@ -39,7 +39,7 @@
                 <el-table-column
                         prop="address"
                         label="操作">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button @click="detail(scope.row)"
                                    size="small">查看</el-button>
                         <el-button @click="edit(scope.row)"

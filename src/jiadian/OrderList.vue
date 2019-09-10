@@ -82,7 +82,7 @@
                 <el-table-column
                         width="140" class-name="operation"
                         prop="address" label="操作">
-                    <template scope="scope">
+                    <template slot-scope="scope">
                         <el-button @click="edit(scope.row)"
                                    size="small">编辑</el-button>
                         <el-button @click="remove(scope.row)"
