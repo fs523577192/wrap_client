@@ -16,36 +16,36 @@ module.exports = {
         'html'
     ],
     // add your custom rules here
-    'rules': {
-        'semi': [2, 'always'],
-        'no-else-return': 2,
-        'eqeqeq': [2, 'smart'],
-        'block-scoped-var': 2,
-        'no-multi-spaces': 2,
-        'indent': [2, 4],
-        'space-infix-ops': 2,
-        'key-spacing': 2,
-        'keyword-spacing': 2,
-        'no-array-constructor': 2,
-        'no-new-object': 2,
-        'no-tabs': 2,
-        'brace-style': [2, '1tbs'],
-        'comma-spacing': 2,
-        'space-before-blocks': 2,
-        'no-trailing-spaces': 2,
-        'no-redeclare': 2,
-        'no-use-before-define': 2,
-        'no-duplicate-imports': 2,
-        'no-unreachable': 2,
-        'no-sparse-arrays': 2,
-        'curly': 1,
-        'no-undefined': 1,
+    rules: {
+        'semi': ["error", 'always'],
+        'no-else-return': "error",
+        'eqeqeq': ["error", 'smart'],
+        'block-scoped-var': "error",
+        'no-multi-spaces': "error",
+        'indent': ["error", 4],
+        'space-infix-ops': "error",
+        'key-spacing': "error",
+        'keyword-spacing': "error",
+        'no-array-constructor': "error",
+        'no-new-object': "error",
+        'no-tabs': "error",
+        'brace-style': ["error", '1tbs'],
+        'comma-spacing': "error",
+        'space-before-blocks': "error",
+        'no-trailing-spaces': "error",
+        'no-redeclare': "error",
+        'no-use-before-define': "error",
+        'no-duplicate-imports': "error",
+        'no-unreachable': "error",
+        'no-sparse-arrays': "error",
+        'curly': "warn",
+        'no-undefined': "warn",
 
         // allow paren-less arrow functions
-        'arrow-parens': 0,
+        'arrow-parens': "off",
         // allow async-await
-        'generator-star-spacing': 0,
+        'generator-star-spacing': "off",
         // allow debugger during development
-        'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+        'no-debugger': process.env.NODE_ENV === 'production' ? "error" : 0
     }
 };

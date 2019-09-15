@@ -57,20 +57,20 @@
 </template>
 
 <script>
-import myAjax from '../util/ajax';
+import axios from 'axios';
 
-let thiz;
-function getList () {
+function getList (thiz) {
     thiz.$store.commit('setLoading', true);
-    myAjax(thiz, {
+    axios({
         method: 'GET',
         url: '/component',
         params: {
             page: thiz.page,
             size: thiz.size
         }
-    }).then(function (json) {
+    }).then(function (response) {
         thiz.$store.commit('setLoading', false);
+        const json = response.data;
         thiz.list = json.data.list;
         thiz.total = json.data.total;
         thiz.page = json.data.page;
@@ -81,8 +81,7 @@ function getList () {
 export default {
     name: 'component-list',
     mounted () {
-        thiz = this;
-        getList();
+        getList(this);
     },
     data () {
         return {
@@ -95,18 +94,18 @@ export default {
     },
     methods: {
         setPage (page) {
-            thiz.page = page;
-            getList();
+            this.page = page;
+            getList(this);
         },
         setSize (size) {
-            thiz.size = size;
-            getList();
+            this.size = size;
+            getList(this);
         },
         add () {
-            thiz.$router.push('/component/edit');
+            this.$router.push('/component/edit');
         },
         edit (component) {
-            thiz.$router.push('/component/edit?id=' + component.id);
+            this.$router.push('/component/edit?id=' + component.id);
         },
         remove (component) {
         },

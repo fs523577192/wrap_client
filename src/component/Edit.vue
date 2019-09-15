@@ -29,18 +29,21 @@
 
 <script>
 import ElFormItem from "../../node_modules/element-ui/packages/form/src/form-item.vue";
-import myAjax from '../util/ajax';
+
+import axios from 'axios';
 
 const getComponent = function (thiz) {
     thiz.$store.commit('setLoading', true);
-    myAjax(thiz, {
+    axios({
         method: 'GET',
         url: '/component/id',
-        params: {
+        data: {
             id: thiz.id,
         }
-    }).then(function (json) {
+    }).then(function (response) {
         thiz.$store.commit('setLoading', false);
+        
+        const json = response.data;
         thiz.name = json.data.name;
     }).catch(function (response) {
         console.log(response);
@@ -64,28 +67,36 @@ export default {
     },
     methods: {
         submit () {
-            const thiz = this;
-            if (thiz.name.trim() === '') {
-                thiz.nameError = '';
+            if (this.name.trim() === '') {
+                this.nameError = '';
                 return;
             }
-            const component = { name: thiz.name };
+            const component = { name: this.name };
             let promise;
-            if (thiz.id > 0) {
-                component.id = thiz.id;
-                promise = thiz.$http.patch('/component', component);
+            if (this.id > 0) {
+                component.id = this.id;
+                promise = axios({
+                    method: 'PATCH',
+                    url: '/component',
+                    data: component
+                });
             } else {
-                promise = thiz.$http.post('/component', component);
+                promise = axios({
+                    method: 'POST',
+                    url: '/component',
+                    data: component
+                });
             }
-            promise.then(function (response) {
-                return response.json();
-            }).then(function (result) {
-                if (0 === result.code) {
-                    thiz.$router.back();
+            promise.then((response) => {
+                if (0 === response && response.data && response.data.code) {
+                    this.$router.back();
                 } else {
-                    thiz.nameError = result.message;
+                    this.nameError = response && response.data && typeof(response.data.message) === 'string' ?
+                            response.data.message : '发生了未知错误';
                 }
-            }).catch(function (response) {});
+            }).catch(function (response) {
+                console.log(response);
+            });
         },
         cancel () {
             this.$router.back();
