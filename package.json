@@ -16,7 +16,7 @@
     "es6-promise": "^4.1.0",
     "extend": "^3.0.2",
     "jquery": "^3.5.0",
-    "lodash": "^4.17.12",
+    "lodash": "^4.17.19",
     "macaddress": "^0.2.9",
     "moment": "^2.19.3",
     "no-case": "^2.3.2",
