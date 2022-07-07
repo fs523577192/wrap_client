@@ -18,7 +18,7 @@
     "jquery": "^3.5.0",
     "lodash": "^4.17.12",
     "macaddress": "^0.2.9",
-    "moment": "^2.19.3",
+    "moment": "^2.29.4",
     "no-case": "^2.3.2",
     "sshpk": "^1.13.2",
     "stringstream": "0.0.6",
